@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_app_sale_06072022/common/bases/base_event.dart';
+import 'package:flutter_app_sale_06072022/data/datasources/remote/app_response.dart';
+import 'package:flutter_app_sale_06072022/data/datasources/remote/dto/user_dto.dart';
 import 'package:flutter_app_sale_06072022/data/repositories/sign_in_repository.dart';
 import 'package:flutter_app_sale_06072022/presentation/features/sign_in/sign_in_event.dart';
 
@@ -25,7 +27,8 @@ class SignInBloc extends BaseBloc{
     loadingSink.add(true);
     try {
       Response response = await _repository.signInRequest(event.email, event.password);
-      print(response.data.toString());
+      AppResponse<UserDto> userResponse = AppResponse.fromJson(response.data, UserDto.fromJson);
+      print(userResponse.data.toString());
     } on DioError catch(e) {
       print(e.toString());
     } catch(e) {
