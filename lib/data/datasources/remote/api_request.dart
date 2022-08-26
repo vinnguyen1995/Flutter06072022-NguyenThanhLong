@@ -10,7 +10,7 @@ class ApiRequest {
   }
   
   Future signIn(String email, String password) {
-    return _dio.get(ApiConstant.SIGN_IN_URL, queryParameters: {
+    return _dio.post(ApiConstant.SIGN_IN_URL, data: {
       "email": email,
       "password": password
     });

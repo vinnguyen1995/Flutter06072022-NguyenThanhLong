@@ -6,6 +6,8 @@ import 'package:flutter_app_sale_06072022/presentation/features/sign_in/sign_in_
 import 'package:flutter_app_sale_06072022/presentation/features/sign_in/sign_in_event.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/utils/extension.dart';
+
 class SignInPage extends StatefulWidget {
   @override
   State<SignInPage> createState() => _SignInPageState();
@@ -49,12 +51,21 @@ class SignInContainer extends StatefulWidget {
 
 class _SignInContainerState extends State<SignInContainer> {
   late SignInBloc _bloc;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _bloc = context.read<SignInBloc>();
-    _bloc.eventSink.add(SignInEvent(email: "hello", password: "123"));
+  }
+
+  void handleButtonSignIn(String email, String password) {
+    if (email.isEmpty || password.isEmpty) {
+      showMessage(context, "Thông báo", "Bạn chưa nhập đủ thông tin");
+      return;
+    }
+    _bloc.eventSink.add(SignInEvent(email: email, password: password));
   }
 
   @override
@@ -72,9 +83,11 @@ class _SignInContainerState extends State<SignInContainer> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildPhoneTextField(),
+                    _buildEmailTextField(),
                     _buildPasswordTextField(),
-                    _buildButtonSignIn(),
+                    _buildButtonSignIn(() {
+                      handleButtonSignIn(emailController.text, passwordController.text);
+                    }),
                   ],
                 ),
               ),
@@ -104,11 +117,12 @@ class _SignInContainerState extends State<SignInContainer> {
         ));
   }
 
-  Widget _buildPhoneTextField() {
+  Widget _buildEmailTextField() {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       child: TextField(
         maxLines: 1,
+        controller: emailController,
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -136,6 +150,8 @@ class _SignInContainerState extends State<SignInContainer> {
       margin: EdgeInsets.only(left: 10, right: 10),
       child: TextField(
         maxLines: 1,
+        obscureText: true,
+        controller: passwordController,
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
@@ -158,7 +174,7 @@ class _SignInContainerState extends State<SignInContainer> {
     );
   }
 
-  Widget _buildButtonSignIn() {
+  Widget _buildButtonSignIn(Function onPress) {
     return Container(
         margin: EdgeInsets.only(top: 20),
         child: ElevatedButtonTheme(
@@ -179,7 +195,7 @@ class _SignInContainerState extends State<SignInContainer> {
             child: ElevatedButton(
               child: Text("Login",
                   style: TextStyle(fontSize: 18, color: Colors.white)),
-              onPressed: () {},
+              onPressed: () => onPress(),
             )));
   }
 }
