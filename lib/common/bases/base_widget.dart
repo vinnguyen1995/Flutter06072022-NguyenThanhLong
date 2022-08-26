@@ -13,6 +13,7 @@ class PageContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return shouldRenderPage();
   }
+
   Widget shouldRenderPage() {
     if (providers.isNotEmpty) {
       return MultiProvider(
