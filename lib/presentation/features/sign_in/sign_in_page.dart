@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_app_sale_06072022/common/bases/base_widget.dart';
+import 'package:flutter_app_sale_06072022/common/constants/variable_constant.dart';
 import 'package:flutter_app_sale_06072022/common/widgets/progress_listener_widget.dart';
 import 'package:flutter_app_sale_06072022/data/datasources/remote/api_request.dart';
 import 'package:flutter_app_sale_06072022/data/repositories/sign_in_repository.dart';
@@ -142,7 +143,9 @@ class _SignInContainerState extends State<SignInContainer> {
           children: [
             Text("Don't have an account!"),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, VariableConstant.SIGN_UP_ROUTE);
+              },
               child: Text("Sign Up",
                   style: TextStyle(
                       color: Colors.red, decoration: TextDecoration.underline)),

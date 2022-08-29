@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_sale_06072022/common/constants/variable_constant.dart';
 import 'package:flutter_app_sale_06072022/presentation/features/sign_in/sign_in_page.dart';
+import 'package:flutter_app_sale_06072022/presentation/features/sign_up/sign_up_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        VariableConstant.SIGN_IN_ROUTE: (context) => SignInPage()
+        VariableConstant.SIGN_IN_ROUTE: (context) => SignInPage(),
+        VariableConstant.SIGN_UP_ROUTE: (context) => SignUpPage(),
       },
       initialRoute: VariableConstant.SIGN_IN_ROUTE,
     );

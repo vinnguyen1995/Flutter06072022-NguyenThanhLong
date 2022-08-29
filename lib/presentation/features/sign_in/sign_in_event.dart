@@ -16,5 +16,4 @@ class SignInSuccessEvent extends BaseEvent {
 
   @override
   List<Object?> get props => [message];
-
 }
