@@ -6,8 +6,9 @@ import 'package:flutter_app_sale_06072022/data/repositories/sign_in_repository.d
 import 'package:flutter_app_sale_06072022/presentation/features/sign_in/sign_in_event.dart';
 
 import '../../../common/bases/base_bloc.dart';
+import '../../../data/model/user.dart';
 
-class SignInBloc extends BaseBloc{
+class SignInBloc extends BaseBloc {
   late SignInRepository _repository;
 
   void updateRepository(SignInRepository signInRepository) {
@@ -16,24 +17,34 @@ class SignInBloc extends BaseBloc{
 
   @override
   void dispatch(BaseEvent event) {
-    switch(event.runtimeType) {
+    switch (event.runtimeType) {
       case SignInEvent:
         _handleSignIn(event as SignInEvent);
         break;
     }
   }
 
-  void _handleSignIn(SignInEvent event) async{
+  void _handleSignIn(SignInEvent event) async {
     loadingSink.add(true);
     try {
-      Response response = await _repository.signInRequest(event.email, event.password);
-      AppResponse<UserDto> userResponse = AppResponse.fromJson(response.data, UserDto.fromJson);
-      print(userResponse.data.toString());
-    } on DioError catch(e) {
-      print(e.toString());
-    } catch(e) {
-      print(e.toString());
+      Response response =
+          await _repository.signInRequest(event.email, event.password);
+      AppResponse<UserDto> userResponse =
+          AppResponse.fromJson(response.data, UserDto.fromJson);
+      UserDto? userDto = userResponse.data;
+      if (userDto != null) {
+        User user = User(
+            userDto.email ?? "",
+            userDto.name ?? "",
+            userDto.phone ?? "",
+            userDto.registerDate ?? "",
+            userDto.token ?? "");
+        print(user.toString());
+      }
+    } on DioError catch (e) {
+      messageSink.add(e.response?.data["message"]);
+    } catch (e) {
+      messageSink.add(e.toString());
     }
   }
-
 }

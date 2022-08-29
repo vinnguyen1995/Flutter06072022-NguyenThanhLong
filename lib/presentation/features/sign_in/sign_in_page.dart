@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_app_sale_06072022/common/bases/base_widget.dart';
 import 'package:flutter_app_sale_06072022/data/datasources/remote/api_request.dart';
 import 'package:flutter_app_sale_06072022/data/repositories/sign_in_repository.dart';
@@ -58,6 +59,12 @@ class _SignInContainerState extends State<SignInContainer> {
   void initState() {
     super.initState();
     _bloc = context.read<SignInBloc>();
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _bloc.messageStream.listen((event) {
+        showMessage(context, "Thông báo", event);
+      });
+    });
   }
 
   void handleButtonSignIn(String email, String password) {
