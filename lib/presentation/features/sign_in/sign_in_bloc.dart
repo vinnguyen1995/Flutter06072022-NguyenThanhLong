@@ -39,12 +39,12 @@ class SignInBloc extends BaseBloc {
             userDto.phone ?? "",
             userDto.registerDate ?? "",
             userDto.token ?? "");
-        print(user.toString());
       }
     } on DioError catch (e) {
       messageSink.add(e.response?.data["message"]);
     } catch (e) {
       messageSink.add(e.toString());
     }
+    loadingSink.add(false);
   }
 }

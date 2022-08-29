@@ -4,7 +4,7 @@ import 'base_event.dart';
 
 abstract class BaseBloc {
   final StreamController<BaseEvent> _eventStreamController = StreamController();
-  final StreamController<bool> _loadingController = StreamController();
+  final StreamController<bool> _loadingController = StreamController.broadcast();
   final StreamController<BaseEvent> _progressController = BehaviorSubject();
   final StreamController<String> _messageController = BehaviorSubject();
 

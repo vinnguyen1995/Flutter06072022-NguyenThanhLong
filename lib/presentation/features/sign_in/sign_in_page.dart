@@ -8,6 +8,7 @@ import 'package:flutter_app_sale_06072022/presentation/features/sign_in/sign_in_
 import 'package:provider/provider.dart';
 
 import '../../../common/utils/extension.dart';
+import '../../../common/widgets/loading_widget.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -80,26 +81,43 @@ class _SignInContainerState extends State<SignInContainer> {
     return Container(
       color: Colors.white,
       child: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            Expanded(
-                flex: 2, child: Image.asset("assets/images/ic_hello_food.png")),
-            Expanded(
-              flex: 4,
-              child: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildEmailTextField(),
-                    _buildPasswordTextField(),
-                    _buildButtonSignIn(() {
-                      handleButtonSignIn(emailController.text, passwordController.text);
-                    }),
-                  ],
+            Column(
+              children: [
+                Expanded(
+                    flex: 2, child: Image.asset("assets/images/ic_hello_food.png")),
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildEmailTextField(),
+                        _buildPasswordTextField(),
+                        StreamBuilder<bool>(
+                          stream: _bloc.loadingStream,
+                          initialData: false,
+                          builder: (context, snapshot) {
+                            return IgnorePointer(
+                              ignoring: snapshot.data ?? false,
+                              child: _buildButtonSignIn(() {
+                                handleButtonSignIn(emailController.text, passwordController.text);
+                              }),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                Expanded(child: _buildTextSignUp())
+              ],
             ),
-            Expanded(child: _buildTextSignUp())
+            LoadingWidget(
+              bloc: _bloc,
+              child: Container(),
+            )
           ],
         ),
       ),
