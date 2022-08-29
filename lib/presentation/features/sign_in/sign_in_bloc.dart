@@ -39,6 +39,7 @@ class SignInBloc extends BaseBloc {
             userDto.phone ?? "",
             userDto.registerDate ?? "",
             userDto.token ?? "");
+        progressSink.add(SignInSuccessEvent(message: "Đăng nhập thành công"));
       }
     } on DioError catch (e) {
       messageSink.add(e.response?.data["message"]);

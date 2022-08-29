@@ -8,3 +8,13 @@ class SignInEvent extends BaseEvent {
   @override
   List<Object?> get props => [];
 }
+
+class SignInSuccessEvent extends BaseEvent {
+  String message;
+
+  SignInSuccessEvent({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+
+}
