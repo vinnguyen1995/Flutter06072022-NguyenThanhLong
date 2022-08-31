@@ -3,6 +3,12 @@ import 'package:provider/provider.dart';
 import '../bases/base_bloc.dart';
 import '../bases/base_event.dart';
 
+/*
+ * Listen Event From Bloc
+ *
+ * @param Widget
+ * @param Function
+ */
 class ProgressListenerWidget<T extends BaseBloc> extends StatefulWidget {
   final Widget child;
   final Function(BaseEvent event) callback;

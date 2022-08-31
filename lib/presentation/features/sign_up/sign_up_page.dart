@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_app_sale_06072022/common/bases/base_widget.dart';
+import 'package:flutter_app_sale_06072022/common/utils/extension.dart';
+import 'package:flutter_app_sale_06072022/presentation/features/sign_up/sign_up_bloc.dart';
+import 'package:flutter_app_sale_06072022/presentation/features/sign_up/sign_up_event.dart';
+import 'package:provider/provider.dart';
+
+import '../../../common/widgets/loading_widget.dart';
+import '../../../common/widgets/progress_listener_widget.dart';
+import '../../../data/datasources/remote/api_request.dart';
+import '../../../data/repositories/authentication_repository.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -15,7 +25,23 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: AppBar(
         title: const Text("Sign Up"),
       ),
-      providers: [],
+      providers: [
+        Provider(create: (context) => ApiRequest()),
+        ProxyProvider<ApiRequest, AuthenticationRepository>(
+          update: (context, request, repository) {
+            repository?.update(request);
+            return repository ?? AuthenticationRepository()
+              ..update(request);
+          },
+        ),
+        ProxyProvider<AuthenticationRepository, SignUpBloc>(
+          update: (context, repository, bloc) {
+            bloc?.updateRepository(repository);
+            return bloc ?? SignUpBloc()
+              ..updateRepository(repository);
+          },
+        ),
+      ],
       child: SignUpContainer(),
     );
   }
@@ -29,6 +55,41 @@ class SignUpContainer extends StatefulWidget {
 }
 
 class _SignUpContainerState extends State<SignUpContainer> {
+  late TextEditingController emailController, phoneController, passwordController, addressController, nameController;
+  late SignUpBloc _bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    nameController = TextEditingController();
+    passwordController = TextEditingController();
+    addressController = TextEditingController();
+    phoneController = TextEditingController();
+
+    _bloc = context.read<SignUpBloc>();
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _bloc.messageStream.listen((event) {
+        showMessage(context, "Thông báo", event);
+      });
+    });
+  }
+
+  void clickSignUp(String email, String name, String password, String address, String phone){
+    List<String> listString = List.empty(growable: true)
+                                  ..add(email)
+                                  ..add(password)
+                                  ..add(name)
+                                  ..add(address)
+                                  ..add(phone);
+    if (isNotEmpty(listString)) {
+      _bloc.eventSink.add(SignUpEvent(email: email, password: password, name: name, phone: phone, address: address));
+    } else {
+      showMessage(context, "Thông báo", "Bạn chưa nhập đủ thông tin");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -46,20 +107,38 @@ class _SignUpContainerState extends State<SignUpContainer> {
                       constraints:
                       BoxConstraints(minHeight: constraint.maxHeight),
                       child: IntrinsicHeight(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        child: Stack(
                           children: [
-                            _buildDisplayTextField(),
-                            SizedBox(height: 10),
-                            _buildAddressTextField(),
-                            SizedBox(height: 10),
-                            _buildEmailTextField(),
-                            SizedBox(height: 10),
-                            _buildPhoneTextField(),
-                            SizedBox(height: 10),
-                            _buildPasswordTextField(),
-                            SizedBox(height: 10),
-                            _buildButtonSignUp()
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                _buildNameTextField(nameController),
+                                SizedBox(height: 10),
+                                _buildAddressTextField(addressController),
+                                SizedBox(height: 10),
+                                _buildEmailTextField(emailController),
+                                SizedBox(height: 10),
+                                _buildPhoneTextField(phoneController),
+                                SizedBox(height: 10),
+                                _buildPasswordTextField(passwordController),
+                                SizedBox(height: 10),
+                                _buildButtonSignUp(() {
+                                  clickSignUp(emailController.text, nameController.text, passwordController.text, addressController.text, phoneController.text);
+                                })
+                              ],
+                            ),
+                            ProgressListenerWidget<SignUpBloc>(
+                              callback: (event) {
+                                if (event is SignUpSuccessEvent) {
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(event.message)));
+                                }
+                              },
+                              child: Container(),
+                            ),
+                            LoadingWidget(
+                              bloc: _bloc,
+                              child: Container(),
+                            )
                           ],
                         ),
                       ),
@@ -72,11 +151,12 @@ class _SignUpContainerState extends State<SignUpContainer> {
     );
   }
 
-  Widget _buildDisplayTextField() {
+  Widget _buildNameTextField(TextEditingController controller) {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       child: TextField(
         maxLines: 1,
+        controller: controller,
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -99,11 +179,12 @@ class _SignUpContainerState extends State<SignUpContainer> {
     );
   }
 
-  Widget _buildAddressTextField() {
+  Widget _buildAddressTextField(TextEditingController controller) {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       child: TextField(
         maxLines: 1,
+        controller: controller,
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -126,11 +207,12 @@ class _SignUpContainerState extends State<SignUpContainer> {
     );
   }
 
-  Widget _buildEmailTextField() {
+  Widget _buildEmailTextField(TextEditingController controller) {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       child: TextField(
         maxLines: 1,
+        controller: controller,
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -153,11 +235,12 @@ class _SignUpContainerState extends State<SignUpContainer> {
     );
   }
 
-  Widget _buildPhoneTextField() {
+  Widget _buildPhoneTextField(TextEditingController controller) {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       child: TextField(
         maxLines: 1,
+        controller: controller,
         keyboardType: TextInputType.phone,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -180,11 +263,12 @@ class _SignUpContainerState extends State<SignUpContainer> {
     );
   }
 
-  Widget _buildPasswordTextField() {
+  Widget _buildPasswordTextField(TextEditingController controller) {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       child: TextField(
         maxLines: 1,
+        controller: controller,
         obscureText: true,
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.done,
@@ -208,7 +292,7 @@ class _SignUpContainerState extends State<SignUpContainer> {
     );
   }
 
-  Widget _buildButtonSignUp() {
+  Widget _buildButtonSignUp(Function()? function) {
     return Container(
         margin: EdgeInsets.only(top: 20),
         child: ElevatedButtonTheme(
@@ -229,7 +313,7 @@ class _SignUpContainerState extends State<SignUpContainer> {
             child: ElevatedButton(
               child: Text("Register",
                   style: TextStyle(fontSize: 18, color: Colors.white)),
-              onPressed: () {},
+              onPressed: function,
             )));
   }
 }

@@ -12,6 +12,6 @@ class AuthenticationRepository {
   }
 
   Future sigUpRequest(String email, String name, String phone, String password, String address) {
-    return _apiRequest.signIn(email, password);
+    return _apiRequest.signUp(email, name, phone, password, address);
   }
 }
