@@ -4,7 +4,7 @@ import 'package:flutter_app_sale_06072022/common/bases/base_widget.dart';
 import 'package:flutter_app_sale_06072022/common/constants/variable_constant.dart';
 import 'package:flutter_app_sale_06072022/common/widgets/progress_listener_widget.dart';
 import 'package:flutter_app_sale_06072022/data/datasources/remote/api_request.dart';
-import 'package:flutter_app_sale_06072022/data/repositories/sign_in_repository.dart';
+import 'package:flutter_app_sale_06072022/data/repositories/authentication_repository.dart';
 import 'package:flutter_app_sale_06072022/presentation/features/sign_in/sign_in_bloc.dart';
 import 'package:flutter_app_sale_06072022/presentation/features/sign_in/sign_in_event.dart';
 import 'package:provider/provider.dart';
@@ -26,14 +26,14 @@ class _SignInPageState extends State<SignInPage> {
       ),
       providers: [
         Provider(create: (context) => ApiRequest()),
-        ProxyProvider<ApiRequest, SignInRepository>(
+        ProxyProvider<ApiRequest, AuthenticationRepository>(
           update: (context, request, repository) {
             repository?.update(request);
-            return repository ?? SignInRepository()
+            return repository ?? AuthenticationRepository()
               ..update(request);
           },
         ),
-        ProxyProvider<SignInRepository, SignInBloc>(
+        ProxyProvider<AuthenticationRepository, SignInBloc>(
           update: (context, repository, bloc) {
             bloc?.updateRepository(repository);
             return bloc ?? SignInBloc()

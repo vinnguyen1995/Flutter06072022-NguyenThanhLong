@@ -1,17 +1,20 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_app_sale_06072022/common/bases/base_event.dart';
 import 'package:flutter_app_sale_06072022/data/datasources/remote/app_response.dart';
 import 'package:flutter_app_sale_06072022/data/datasources/remote/dto/user_dto.dart';
-import 'package:flutter_app_sale_06072022/data/repositories/sign_in_repository.dart';
+import 'package:flutter_app_sale_06072022/data/repositories/authentication_repository.dart';
 import 'package:flutter_app_sale_06072022/presentation/features/sign_in/sign_in_event.dart';
 
 import '../../../common/bases/base_bloc.dart';
 import '../../../data/model/user.dart';
 
 class SignInBloc extends BaseBloc {
-  late SignInRepository _repository;
+  StreamController<User> userData = StreamController();
+  late AuthenticationRepository _repository;
 
-  void updateRepository(SignInRepository signInRepository) {
+  void updateRepository(AuthenticationRepository signInRepository) {
     _repository = signInRepository;
   }
 
@@ -34,11 +37,12 @@ class SignInBloc extends BaseBloc {
       UserDto? userDto = userResponse.data;
       if (userDto != null) {
         User user = User(
-            userDto.email ?? "",
-            userDto.name ?? "",
-            userDto.phone ?? "",
-            userDto.registerDate ?? "",
-            userDto.token ?? "");
+            userDto.email,
+            userDto.name,
+            userDto.phone,
+            userDto.registerDate,
+            userDto.token);
+        userData.sink.add(user);
         progressSink.add(SignInSuccessEvent(message: "Đăng nhập thành công"));
       }
     } on DioError catch (e) {

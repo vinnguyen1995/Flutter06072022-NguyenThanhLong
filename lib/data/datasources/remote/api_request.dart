@@ -15,4 +15,14 @@ class ApiRequest {
       "password": password
     });
   }
+
+  Future signUp(String email, String name, String phone, String password, String address) {
+    return _dio.post(ApiConstant.SIGN_UP_URL, data: {
+      "email": email,
+      "password": password,
+      "phone": phone,
+      "name": name,
+      "address": address
+    });
+  }
 }

@@ -6,6 +6,7 @@ class UserDto {
     this.userGroup,
     this.registerDate,
     this.token,
+    this.address
   });
 
   UserDto.fromJson(dynamic json) {
@@ -15,6 +16,7 @@ class UserDto {
     userGroup = json['userGroup'];
     registerDate = json['registerDate'];
     token = json['token'];
+    address = json['address'];
   }
 
   String? email;
@@ -23,6 +25,7 @@ class UserDto {
   int? userGroup;
   String? registerDate;
   String? token;
+  String? address;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -32,6 +35,7 @@ class UserDto {
     map['userGroup'] = userGroup;
     map['registerDate'] = registerDate;
     map['token'] = token;
+    map['address'] = address;
     return map;
   }
 
