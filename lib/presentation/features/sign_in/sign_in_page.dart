@@ -120,6 +120,7 @@ class _SignInContainerState extends State<SignInContainer> {
             ProgressListenerWidget<SignInBloc>(
               callback: (event) {
                 if (event is SignInSuccessEvent) {
+                  Navigator.pushReplacementNamed(context, VariableConstant.HOME_ROUTE);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(event.message)));
                 }
               },
