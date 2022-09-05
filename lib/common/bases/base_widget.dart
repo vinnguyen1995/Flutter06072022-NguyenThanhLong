@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-class PageContainer extends StatelessWidget {
 
+class PageContainer extends StatelessWidget {
   final Widget child;
   final List<SingleChildWidget> providers;
   AppBar? appBar;
@@ -13,6 +13,7 @@ class PageContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return shouldRenderPage();
   }
+
   Widget shouldRenderPage() {
     if (providers.isNotEmpty) {
       return MultiProvider(
