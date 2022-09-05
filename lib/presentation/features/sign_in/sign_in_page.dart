@@ -143,8 +143,17 @@ class _SignInContainerState extends State<SignInContainer> {
           children: [
             Text("Don't have an account!"),
             InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, VariableConstant.SIGN_UP_ROUTE);
+              onTap: () async{
+                try {
+                  var data = await Navigator.pushNamed(context, VariableConstant.SIGN_UP_ROUTE) as Map;
+                  setState(() {
+                    emailController.text = data["email"];
+                    passwordController.text = data["password"];
+                  });
+                } catch (e) {
+                  showMessage(context, "Thông báo", e.toString());
+                  return;
+                }
               },
               child: Text("Sign Up",
                   style: TextStyle(
