@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_sale_06072022/common/constants/variable_constant.dart';
+import 'package:flutter_app_sale_06072022/data/datasources/local/cache/app_cache.dart';
 import 'package:flutter_app_sale_06072022/presentation/features/sign_in/sign_in_page.dart';
 import 'package:flutter_app_sale_06072022/presentation/features/sign_up/sign_up_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
+  AppCache.init();
 }
 
 class MyApp extends StatelessWidget {

@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_app_sale_06072022/common/bases/base_widget.dart';
 import 'package:flutter_app_sale_06072022/common/constants/variable_constant.dart';
 import 'package:flutter_app_sale_06072022/common/widgets/progress_listener_widget.dart';
+import 'package:flutter_app_sale_06072022/data/datasources/local/cache/app_cache.dart';
 import 'package:flutter_app_sale_06072022/data/datasources/remote/api_request.dart';
 import 'package:flutter_app_sale_06072022/data/repositories/authentication_repository.dart';
 import 'package:flutter_app_sale_06072022/presentation/features/sign_in/sign_in_bloc.dart';
@@ -119,6 +120,7 @@ class _SignInContainerState extends State<SignInContainer> {
             ProgressListenerWidget<SignInBloc>(
               callback: (event) {
                 if (event is SignInSuccessEvent) {
+                  print(AppCache.getString(VariableConstant.TOKEN));
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(event.message)));
                 }
               },
