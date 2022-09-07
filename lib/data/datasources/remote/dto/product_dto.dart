@@ -43,3 +43,11 @@ class ProductDto {
     return (json as List).map((e) => ProductDto.fromJson(e)).toList();
   }
 }
+
+// List myMap(List<dynamic> list, Function function) {
+//   List<dynamic> newList = [];
+//   for (int i = 0; i < list.length ; i++) {
+//     newList.add(function(list[i]));
+//   }
+//   return newList;
+// }
