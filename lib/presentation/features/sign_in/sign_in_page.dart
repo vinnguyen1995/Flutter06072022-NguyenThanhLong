@@ -3,7 +3,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_app_sale_06072022/common/bases/base_widget.dart';
 import 'package:flutter_app_sale_06072022/common/constants/variable_constant.dart';
 import 'package:flutter_app_sale_06072022/common/widgets/progress_listener_widget.dart';
-import 'package:flutter_app_sale_06072022/data/datasources/local/cache/app_cache.dart';
 import 'package:flutter_app_sale_06072022/data/datasources/remote/api_request.dart';
 import 'package:flutter_app_sale_06072022/data/repositories/authentication_repository.dart';
 import 'package:flutter_app_sale_06072022/presentation/features/sign_in/sign_in_bloc.dart';
@@ -29,9 +28,9 @@ class _SignInPageState extends State<SignInPage> {
         Provider(create: (context) => ApiRequest()),
         ProxyProvider<ApiRequest, AuthenticationRepository>(
           update: (context, request, repository) {
-            repository?.update(request);
+            repository?.updateRequest(request);
             return repository ?? AuthenticationRepository()
-              ..update(request);
+              ..updateRequest(request);
           },
         ),
         ProxyProvider<AuthenticationRepository, SignInBloc>(

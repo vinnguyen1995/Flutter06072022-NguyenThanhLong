@@ -29,9 +29,9 @@ class _SignUpPageState extends State<SignUpPage> {
         Provider(create: (context) => ApiRequest()),
         ProxyProvider<ApiRequest, AuthenticationRepository>(
           update: (context, request, repository) {
-            repository?.update(request);
+            repository?.updateRequest(request);
             return repository ?? AuthenticationRepository()
-              ..update(request);
+              ..updateRequest(request);
           },
         ),
         ProxyProvider<AuthenticationRepository, SignUpBloc>(
