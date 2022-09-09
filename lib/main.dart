@@ -20,8 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        fontFamily: "QuickSan",
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blueGrey,
       ),
       routes: {
         VariableConstant.SIGN_IN_ROUTE: (context) => SignInPage(),
@@ -33,4 +32,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

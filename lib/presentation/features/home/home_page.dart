@@ -6,6 +6,7 @@ import 'package:flutter_app_sale_06072022/presentation/features/home/home_event.
 import 'package:provider/provider.dart';
 
 import '../../../data/datasources/remote/api_request.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -18,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return PageContainer(
       appBar: AppBar(
-        title: const Text("Home"),
+        title: const Text("Home Home"),
       ),
       providers: [
         Provider(create: (context) => ApiRequest()),
@@ -58,6 +59,7 @@ class _HomeContainerState extends State<HomeContainer> {
     _homeBloc = context.read<HomeBloc>();
     _homeBloc.eventSink.add(GetListProductEvent());
   }
+
   @override
   Widget build(BuildContext context) {
     return Container();
@@ -161,4 +163,3 @@ class _HomeContainerState extends State<HomeContainer> {
   //   );
   // }
 }
-
