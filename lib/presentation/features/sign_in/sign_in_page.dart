@@ -88,7 +88,8 @@ class _SignInContainerState extends State<SignInContainer> {
             Column(
               children: [
                 Expanded(
-                    flex: 2, child: Image.asset("assets/images/ic_hello_food.png")),
+                    flex: 2,
+                    child: Image.asset("assets/images/ic_hello_food.png")),
                 Expanded(
                   flex: 4,
                   child: Container(
@@ -104,7 +105,8 @@ class _SignInContainerState extends State<SignInContainer> {
                             return IgnorePointer(
                               ignoring: snapshot.data ?? false,
                               child: _buildButtonSignIn(() {
-                                handleButtonSignIn(emailController.text, passwordController.text);
+                                handleButtonSignIn(emailController.text,
+                                    passwordController.text);
                               }),
                             );
                           },
@@ -119,8 +121,10 @@ class _SignInContainerState extends State<SignInContainer> {
             ProgressListenerWidget<SignInBloc>(
               callback: (event) {
                 if (event is SignInSuccessEvent) {
-                  Navigator.pushReplacementNamed(context, VariableConstant.HOME_ROUTE);
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(event.message)));
+                  Navigator.pushReplacementNamed(
+                      context, VariableConstant.HOME_ROUTE);
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(event.message)));
                 }
               },
               child: Container(),
@@ -144,9 +148,10 @@ class _SignInContainerState extends State<SignInContainer> {
           children: [
             Text("Don't have an account!"),
             InkWell(
-              onTap: () async{
+              onTap: () async {
                 try {
-                  var data = await Navigator.pushNamed(context, VariableConstant.SIGN_UP_ROUTE) as Map;
+                  var data = await Navigator.pushNamed(
+                      context, VariableConstant.SIGN_UP_ROUTE) as Map;
                   setState(() {
                     emailController.text = data["email"];
                     passwordController.text = data["password"];
