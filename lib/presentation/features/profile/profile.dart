@@ -67,10 +67,34 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   style: TextButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 20),
                   ),
-                  onPressed: () {
+                  onPressed: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Are you sure you want to Sign Out?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignInPage()));
+                          },
+                          child: const Text(
+                            'Sign Out',
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  /* {
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => SignInPage()));
-                  },
+                  } */
                   child: Container(
                       margin: const EdgeInsets.only(bottom: 40),
                       child: const Text('Sign Out')),
