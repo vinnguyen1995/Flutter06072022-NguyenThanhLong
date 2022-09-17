@@ -4,6 +4,7 @@ import 'package:flutter_app_sale_06072022/data/model/product.dart';
 import 'package:flutter_app_sale_06072022/data/repositories/product_repository.dart';
 import 'package:flutter_app_sale_06072022/presentation/features/home/home_bloc.dart';
 import 'package:flutter_app_sale_06072022/presentation/features/home/home_event.dart';
+import 'package:flutter_app_sale_06072022/presentation/features/item/item_page.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../common/constants/api_constant.dart';
@@ -161,7 +162,12 @@ class _HomeContainerState extends State<HomeContainer> {
                         Padding(
                           padding: const EdgeInsets.only(left: 5),
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ItemDetails()));
+                            },
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith((states) {
