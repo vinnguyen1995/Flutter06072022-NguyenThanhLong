@@ -3,7 +3,7 @@ import 'package:flutter_app_sale_06072022/common/bases/base_widget.dart';
 import 'package:flutter_app_sale_06072022/common/constants/variable_constant.dart';
 import 'package:flutter_app_sale_06072022/data/datasources/local/cache/app_cache.dart';
 import 'package:flutter_app_sale_06072022/presentation/features/sign_in/sign_in_page.dart';
-import '../../../common/constants/variable_constant.dart';
+import '../profile/signOut.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -78,6 +78,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                         ),
                         TextButton(
                           onPressed: () {
+                            signOut();
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
