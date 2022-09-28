@@ -79,10 +79,12 @@ class _ProfileContainerState extends State<ProfileContainer> {
                         TextButton(
                           onPressed: () {
                             signOut();
-                            Navigator.pushReplacement(
+                            Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SignInPage()));
+                                    builder: (BuildContext context) =>
+                                        SignInPage()),
+                                (Route<dynamic> route) => false);
                           },
                           child: const Text(
                             'Sign Out',
